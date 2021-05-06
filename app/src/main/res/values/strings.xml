@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RPM Motor</string>
+    <string name="rpm_motor">RPM MOTOR</string>
+    <string name="login">Login</string>
+</resources>
