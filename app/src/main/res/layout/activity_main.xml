@@ -105,15 +105,16 @@
             android:textColor="@color/black"/>
 
         <Button
-            android:id="@+id/imageView8"
+            android:id="@+id/post_view"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="8dp"
             app:srcCompat="@drawable/button_red"
             app:backgroundTint="@color/color2"
-            android:text="POST
+            android:text="Brand
             View"
             android:textSize="11sp"
+            android:layout_gravity="center"
             android:textColor="@color/black"/>
 
         <Button

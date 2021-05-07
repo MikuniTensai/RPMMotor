@@ -8,4 +8,6 @@ public class Product {
     String brand;
     String qty;
     String price;
+    String total;
+    String titles;
 }

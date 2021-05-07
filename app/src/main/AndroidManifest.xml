@@ -3,7 +3,7 @@
     package="com.pkn.rpmmotor">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RPMMotor">
-        <activity android:name=".DeviceActivity"></activity>
+        <activity android:name=".POSViewActivity"></activity>
+        <activity android:name=".DeviceActivity" />
         <activity android:name=".POSActivity" />
         <activity android:name=".ProductViewActivity" />
         <activity android:name=".ProductActivity" />

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -234,6 +235,7 @@ public class POSActivity extends AppCompatActivity implements EasyPermissions.Pe
                 edt_list.setText("RPM Motor" + "\n" + "Telp : 08988509765" + "\n" + "Selasa. 12/04/2021 13:44:29" + "\n" + c.getString(product) + "\t" + c.getString(qty));
             } while (c.moveToNext());
         }
+        insert();
     }
 
     private void printText() {
@@ -254,6 +256,7 @@ public class POSActivity extends AppCompatActivity implements EasyPermissions.Pe
                 startActivityForResult(new Intent(this, DeviceActivity.class), RC_CONNECT_DEVICE);
             else
                 requestBluetooth();
+//                insert();
         }
     }
 
@@ -263,6 +266,30 @@ public class POSActivity extends AppCompatActivity implements EasyPermissions.Pe
                 Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(intent, RC_ENABLE_BLUETOOTH);
             }
+        }
+    }
+
+    public void insert(){
+        try {
+            String product = edt_product.getText().toString();
+            String qty = edt_qty.getText().toString();
+            String price = edt_price.getText().toString();
+            String total = edt_total.getText().toString();
+
+            SQLiteDatabase db = openOrCreateDatabase("pos", Context.MODE_PRIVATE, null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS pos(id INTEGER PRIMARY KEY AUTOINCREMENT, product VARCHAR, qty VARCHAR, price VARCHAR, total VARCHAR)");
+
+            String sql = "insert into pos (product,qty,price,total)values(?,?,?,?)";
+            SQLiteStatement statement = db.compileStatement(sql);
+            statement.bindString(1,product);
+            statement.bindString(2,qty);
+            statement.bindString(3,price);
+            statement.bindString(4,total);
+            statement.execute();
+            Toast.makeText(this, "POS add successful",Toast.LENGTH_LONG).show();
+            edt_product.requestFocus();
+        } catch (Exception ex) {
+            Toast.makeText(this, "Category add failed",Toast.LENGTH_LONG).show();
         }
     }
 }

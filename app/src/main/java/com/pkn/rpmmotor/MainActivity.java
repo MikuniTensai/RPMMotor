@@ -72,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(pos);
             }
         });
+
+        pos_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent post_view = new Intent(MainActivity.this, POSViewActivity.class);
+                startActivity(post_view);
+            }
+        });
     }
 
     private void initComponents(){
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         product = findViewById(R.id.product);
         product_view = findViewById(R.id.product_view);
         pos = findViewById(R.id.pos);
+        pos_view = findViewById(R.id.post_view);
     }
 
 }
