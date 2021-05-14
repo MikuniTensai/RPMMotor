@@ -23,8 +23,7 @@
         <activity android:name=".CategoryUpdateActivity" />
         <activity android:name=".CategoryViewActivity" />
         <activity android:name=".CategoryActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

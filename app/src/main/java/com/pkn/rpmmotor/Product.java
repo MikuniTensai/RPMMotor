@@ -10,4 +10,6 @@ public class Product {
     String price;
     String total;
     String titles;
+    String count;
+    String status;
 }

@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button category, brand, product, category_view, brand_view, product_view, pos, pos_view, user;
+    Button category, brand, product, category_view, brand_view, product_view, pos, pos_view, pos_print;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         product_view = findViewById(R.id.product_view);
         pos = findViewById(R.id.pos);
         pos_view = findViewById(R.id.post_view);
+        pos_print = findViewById(R.id.post_print);
     }
 
 }
