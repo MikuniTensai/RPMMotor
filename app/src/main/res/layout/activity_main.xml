@@ -110,10 +110,8 @@
             android:layout_margin="8dp"
             app:srcCompat="@drawable/button_red"
             app:backgroundTint="@color/color2"
-            android:text="POS
-            View"
+            android:text="POS View"
             android:textSize="11sp"
-            android:layout_gravity="center"
             android:textColor="@color/black"/>
 
         <Button
@@ -121,12 +119,11 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="8dp"
-            app:srcCompat="@drawable/button_red"
-            app:backgroundTint="@color/color3"
-            android:text="POS
-            PRINT"
+            android:text="POS PRINT"
+            android:textColor="@color/black"
             android:textSize="11sp"
-            android:textColor="@color/black"/>
+            app:backgroundTint="@color/color3"
+            app:srcCompat="@drawable/button_red" />
 
     </GridLayout>
 

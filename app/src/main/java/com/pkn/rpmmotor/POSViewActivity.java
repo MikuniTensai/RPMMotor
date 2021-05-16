@@ -68,50 +68,60 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
         ButterKnife.bind(this);
         setupBluetooth();
 
-        btn_print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                printText();
+        try {
+            btn_print.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    printText();
+                }
+            });
+
+            SQLiteDatabase db = openOrCreateDatabase("pos", Context.MODE_PRIVATE, null);
+
+            final Cursor c = db.rawQuery("select * from pos where status = 0", null);
+
+            int id = c.getColumnIndex("id");
+            int product = c.getColumnIndex("product");
+            int qty = c.getColumnIndex("qty");
+            int price = c.getColumnIndex("price");
+            int total = c.getColumnIndex("total");
+            int status = c.getColumnIndex("status");
+            int created_at = c.getColumnIndex("created_at");
+            titles.clear();
+
+            arrayAdapter = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles);
+            list_item.setAdapter(arrayAdapter);
+
+            textview1.setText("RPM Motor \n Jln Sudirman \n Telp. 0821");
+            final ArrayList<Product> Products = new ArrayList<Product>();
+            if (c.moveToFirst()){
+                do {
+                    Product prd = new Product();
+                    prd.id = c.getString(id);
+                    prd.product = c.getString(product);
+                    prd.qty = c.getString(qty);
+                    prd.price = c.getString(price);
+                    prd.total = c.getString(total);
+                    prd.status = c.getString(status);
+                    prd.created_at = c.getString(created_at);
+                    Products.add(prd);
+
+                    titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY \t X \t " + "Rp." + c.getString(price) + "\t \t = \t" + " Rp." + c.getString(total) + "\n" + c.getString(created_at));
+
+                } while (c.moveToNext());
+                arrayAdapter.notifyDataSetChanged();
+                list_item.invalidateViews();
             }
-        });
 
-        SQLiteDatabase db = openOrCreateDatabase("pos", Context.MODE_PRIVATE, null);
-
-        final Cursor c = db.rawQuery("select * from pos where status = 0", null);
-
-        int id = c.getColumnIndex("id");
-        int product = c.getColumnIndex("product");
-        int qty = c.getColumnIndex("qty");
-        int price = c.getColumnIndex("price");
-        int total = c.getColumnIndex("total");
-        int status = c.getColumnIndex("status");
-        titles.clear();
-
-        arrayAdapter = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles);
-        list_item.setAdapter(arrayAdapter);
-
-        textview1.setText("RPM Motor \n Jln Sudirman \n Telp. 0821");
-        final ArrayList<Product> Products = new ArrayList<Product>();
-        if (c.moveToFirst()){
-            do {
-                Product prd = new Product();
-                prd.id = c.getString(id);
-                prd.product = c.getString(product);
-                prd.qty = c.getString(qty);
-                prd.price = c.getString(price);
-                prd.total = c.getString(total);
-                prd.status = c.getString(status);
-                Products.add(prd);
-
-                titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY \t X \t " + "Rp." + c.getString(price) + "\t \t = \t" + " Rp." + c.getString(total));
-
-            } while (c.moveToNext());
-            arrayAdapter.notifyDataSetChanged();
-            list_item.invalidateViews();
+            this.addAllValues();
+            textview.setText("Total : Rp. "+Integer.toString(addAllValues()));
+        } catch (Exception e){
+            Intent pos = new Intent(POSViewActivity.this, POSActivity.class);
+            pos.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(pos);
+            Toast.makeText(this, "Data Empty, Add Product first",Toast.LENGTH_LONG).show();
         }
 
-        this.addAllValues();
-        textview.setText("Total : Rp. "+Integer.toString(addAllValues()));
     }
 
     private void printText() {

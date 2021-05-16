@@ -12,4 +12,5 @@ public class Product {
     String titles;
     String count;
     String status;
+    String created_at;
 }

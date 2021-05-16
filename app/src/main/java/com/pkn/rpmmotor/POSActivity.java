@@ -27,8 +27,11 @@ import android.widget.Toast;
 
 import com.zj.btsdk.BluetoothService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,6 +90,14 @@ public class POSActivity extends AppCompatActivity {
                 add();
             }
         });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cancel = new Intent(POSActivity.this, MainActivity.class);
+                startActivity(cancel);
+            }
+        });
     }
 
     private void initComponents() {
@@ -103,28 +114,36 @@ public class POSActivity extends AppCompatActivity {
     }
 
     public void search(){
-        SQLiteDatabase db = openOrCreateDatabase("rpmmotor", Context.MODE_PRIVATE, null);
-        String id = edt_productid.getText().toString();
-        final Cursor c = db.rawQuery("select * from product where id = '"+id+"'", null);
-        int product = c.getColumnIndex("product");
-        int qty = c.getColumnIndex("qty");
-        int price = c.getColumnIndex("price");
+        try {
+            SQLiteDatabase db = openOrCreateDatabase("rpmmotor", Context.MODE_PRIVATE, null);
+            String id = edt_productid.getText().toString();
+            final Cursor c = db.rawQuery("select * from product where id = '"+id+"'", null);
+            int product = c.getColumnIndex("product");
+            int qty = c.getColumnIndex("qty");
+            int price = c.getColumnIndex("price");
 
-        titles.clear();
+            titles.clear();
 
-        final ArrayList<ProductView> products = new ArrayList<ProductView>();
-        if (c.moveToFirst()){
-            do {
-                ProductView stu = new ProductView();
-                stu.product = c.getString(product);
-                stu.qty = c.getString(qty);
-                stu.price = c.getString(price);
-                products.add(stu);
+            final ArrayList<ProductView> products = new ArrayList<ProductView>();
+            if (c.moveToFirst()){
+                do {
+                    ProductView stu = new ProductView();
+                    stu.product = c.getString(product);
+                    stu.qty = c.getString(qty);
+                    stu.price = c.getString(price);
+                    products.add(stu);
 
-                edt_product.setText(c.getString(product));
-                edt_price.setText(c.getString(price));
-            } while (c.moveToNext());
+                    edt_product.setText(c.getString(product));
+                    edt_price.setText(c.getString(price));
+                } while (c.moveToNext());
+            }
+        } catch (Exception e){
+            Intent product = new Intent(POSActivity.this, ProductActivity.class);
+            product.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(product);
+            Toast.makeText(this, "Data Empty, add Product First",Toast.LENGTH_LONG).show();
         }
+
     }
 
     @SuppressLint({"SetTextI18n"})
@@ -153,24 +172,33 @@ public class POSActivity extends AppCompatActivity {
         insert();
     }
 
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
     public void insert(){
         try {
             String product = edt_product.getText().toString();
             String qty = edt_qty.getText().toString();
             String price = edt_price.getText().toString();
             String total = edt_total.getText().toString();
+            String created_at = getDateTime();
             String status = "0";
 
             SQLiteDatabase db = openOrCreateDatabase("pos", Context.MODE_PRIVATE, null);
-            db.execSQL("CREATE TABLE IF NOT EXISTS pos(id INTEGER PRIMARY KEY AUTOINCREMENT, product VARCHAR, qty VARCHAR, price VARCHAR, total VARCHAR, status VARCHAR)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS pos(id INTEGER PRIMARY KEY AUTOINCREMENT, product VARCHAR, qty VARCHAR, price VARCHAR, total VARCHAR, status VARCHAR, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
-            String sql = "insert into pos (product,qty,price,total,status)values(?,?,?,?,?)";
+            String sql = "insert into pos (product,qty,price,total,status,created_at)values(?,?,?,?,?,?)";
             SQLiteStatement statement = db.compileStatement(sql);
             statement.bindString(1,product);
             statement.bindString(2,qty);
             statement.bindString(3,price);
             statement.bindString(4,total);
             statement.bindString(5,status);
+            statement.bindString(6,created_at);
             statement.execute();
             Toast.makeText(this, "POS add successful",Toast.LENGTH_LONG).show();
             edt_product.requestFocus();

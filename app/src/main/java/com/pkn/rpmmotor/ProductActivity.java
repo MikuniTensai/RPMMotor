@@ -33,53 +33,56 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
 
         this.initComponents();
+        try {
+            SQLiteDatabase db = openOrCreateDatabase("rpmmotor", Context.MODE_PRIVATE, null);
 
-        SQLiteDatabase db = openOrCreateDatabase("rpmmotor", Context.MODE_PRIVATE, null);
+            final Cursor c = db.rawQuery("select * from category", null);
+            int category = c.getColumnIndex("category");
 
-        final Cursor c = db.rawQuery("select * from category", null);
-        int category = c.getColumnIndex("category");
+            titles1.clear();
 
-        titles1.clear();
+            arrayAdapter1 = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles1);
+            spinner1.setAdapter(arrayAdapter1);
 
-        arrayAdapter1 = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles1);
-        spinner1.setAdapter(arrayAdapter1);
-
-        final ArrayList<Cate> Cates = new ArrayList<Cate>();
-        if (c.moveToFirst()){
-            do {
-                Cate cate = new Cate();
-                cate.category = c.getString(category);
-                Cates.add(cate);
-                titles1.add(c.getString(category));
-            } while (c.moveToNext());
-            arrayAdapter1.notifyDataSetChanged();
-        }
-
-        final Cursor b = db.rawQuery("select * from brand", null);
-        int brand = b.getColumnIndex("brand");
-
-        titles2.clear();
-
-        arrayAdapter2 = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles2);
-        spinner2.setAdapter(arrayAdapter2);
-
-        final ArrayList<Brand> Brands = new ArrayList<Brand>();
-        if (b.moveToFirst()){
-            do {
-                Brand brd = new Brand();
-                brd.brand = b.getString(brand);
-                Brands.add(brd);
-                titles2.add(b.getString(brand));
-            } while (b.moveToNext());
-            arrayAdapter2.notifyDataSetChanged();
-        }
-
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insert();
+            final ArrayList<Cate> Cates = new ArrayList<Cate>();
+            if (c.moveToFirst()){
+                do {
+                    Cate cate = new Cate();
+                    cate.category = c.getString(category);
+                    Cates.add(cate);
+                    titles1.add(c.getString(category));
+                } while (c.moveToNext());
+                arrayAdapter1.notifyDataSetChanged();
             }
-        });
+
+            final Cursor b = db.rawQuery("select * from brand", null);
+            int brand = b.getColumnIndex("brand");
+
+            titles2.clear();
+
+            arrayAdapter2 = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles2);
+            spinner2.setAdapter(arrayAdapter2);
+
+            final ArrayList<Brand> Brands = new ArrayList<Brand>();
+            if (b.moveToFirst()){
+                do {
+                    Brand brd = new Brand();
+                    brd.brand = b.getString(brand);
+                    Brands.add(brd);
+                    titles2.add(b.getString(brand));
+                } while (b.moveToNext());
+                arrayAdapter2.notifyDataSetChanged();
+            }
+
+            btn_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    insert();
+                }
+            });
+        } catch (Exception e){
+            Toast.makeText(this, "Add Category and Brand first",Toast.LENGTH_LONG).show();
+        }
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
