@@ -46,4 +46,5 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     // bluetooth lib sdk
     implementation files('libs/bluetoothsdk.jar')
+    implementation project(':mysql-connector-java-8.0.25')
 }

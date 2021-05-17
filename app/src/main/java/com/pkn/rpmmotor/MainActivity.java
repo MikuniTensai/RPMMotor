@@ -76,8 +76,16 @@ public class MainActivity extends AppCompatActivity {
         pos_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent post_view = new Intent(MainActivity.this, POSViewActivity.class);
-                startActivity(post_view);
+                Intent pos_view = new Intent(MainActivity.this, POSViewActivity.class);
+                startActivity(pos_view);
+            }
+        });
+
+        pos_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pos_print = new Intent(MainActivity.this, POSPrintActivity.class);
+                startActivity(pos_print);
             }
         });
     }

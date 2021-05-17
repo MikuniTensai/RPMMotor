@@ -11,24 +11,27 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zj.btsdk.BluetoothService;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +53,10 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
     public static final int RC_BLUETOOTH = 0;
     public static final int RC_CONNECT_DEVICE = 1;
     public static final int RC_ENABLE_BLUETOOTH = 2;
+
+    private static final String DB_URL = "jdbc:mysql://192.168.1.3/db_rpmmotor";
+    private static final String USER = "root";
+    private static final String PASS = "";
 
     private BluetoothService mService = null;
     private boolean isPrinterReady = false;
@@ -86,7 +93,6 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
             int price = c.getColumnIndex("price");
             int total = c.getColumnIndex("total");
             int status = c.getColumnIndex("status");
-            int created_at = c.getColumnIndex("created_at");
             titles.clear();
 
             arrayAdapter = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles);
@@ -103,10 +109,9 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
                     prd.price = c.getString(price);
                     prd.total = c.getString(total);
                     prd.status = c.getString(status);
-                    prd.created_at = c.getString(created_at);
                     Products.add(prd);
 
-                    titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY \t X \t " + "Rp." + c.getString(price) + "\t \t = \t" + " Rp." + c.getString(total) + "\n" + c.getString(created_at));
+                    titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY \t X \t " + "Rp." + c.getString(price) + "\t \t = \t" + " Rp." + c.getString(total));
 
                 } while (c.moveToNext());
                 arrayAdapter.notifyDataSetChanged();
@@ -152,14 +157,26 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
         }
     }
 
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
     private void update() {
         try {
             SQLiteDatabase db = openOrCreateDatabase("pos", Context.MODE_PRIVATE, null);
 
-            String sql = "update pos set status = 1 where status = 0";
+            String date = getDateTime();
+
+            String sql = "update pos set status = ?, created_at = ? where status = 0";
             SQLiteStatement statement = db.compileStatement(sql);
-            Toast.makeText(this, "Update successful",Toast.LENGTH_LONG).show();
+            statement.bindString(1,"1");
+            statement.bindString(2, date);
             statement.execute();
+
+            Toast.makeText(this, "Update successful",Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
             Toast.makeText(this, "Update failed", Toast.LENGTH_LONG).show();
         }
