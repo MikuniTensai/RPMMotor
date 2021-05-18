@@ -1,3 +1,4 @@
+include ':mysql-connector-java-3.0.17-ga-bin'
 include ':mysql-connector-java-8.0.25'
 include ':app'
 rootProject.name = "RPM Motor"

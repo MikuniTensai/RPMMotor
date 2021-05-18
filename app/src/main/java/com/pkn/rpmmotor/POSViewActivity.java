@@ -54,9 +54,9 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
     public static final int RC_CONNECT_DEVICE = 1;
     public static final int RC_ENABLE_BLUETOOTH = 2;
 
-    private static final String DB_URL = "jdbc:mysql://192.168.1.3/db_rpmmotor";
-    private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String DB_URL = "jdbc:mysql://192.168.0.110/db_rpmmotor";
+    private static final String USER = "zzz";
+    private static final String PASS = "zzz";
 
     private BluetoothService mService = null;
     private boolean isPrinterReady = false;
@@ -98,7 +98,10 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
             arrayAdapter = new ArrayAdapter(this, R.layout.custom_list,R.id.text, titles);
             list_item.setAdapter(arrayAdapter);
 
+            String msg = "================================";
+
             textview1.setText("RPM Motor \n Jln Sudirman \n Telp. 0821");
+            titles.add(msg);
             final ArrayList<Product> Products = new ArrayList<Product>();
             if (c.moveToFirst()){
                 do {
@@ -111,22 +114,22 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
                     prd.status = c.getString(status);
                     Products.add(prd);
 
-                    titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY \t X \t " + "Rp." + c.getString(price) + "\t \t = \t" + " Rp." + c.getString(total));
+                    titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY\tX\t" + "Rp." + c.getString(price) + "\t\t\t=\t" + " Rp." + c.getString(total));
 
                 } while (c.moveToNext());
+                titles.add(msg);
                 arrayAdapter.notifyDataSetChanged();
                 list_item.invalidateViews();
             }
 
             this.addAllValues();
-            textview.setText("Total : Rp. "+Integer.toString(addAllValues()));
+            textview.setText("Total : Rp. "+Integer.toString(addAllValues())+"\n\n");
         } catch (Exception e){
             Intent pos = new Intent(POSViewActivity.this, POSActivity.class);
             pos.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(pos);
             Toast.makeText(this, "Data Empty, Add Product first",Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void printText() {
@@ -149,6 +152,9 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
             mService.write(PrinterCommands.ESC_ENTER);
 
             update();
+
+            POSViewActivity.Send objSend = new POSViewActivity.Send();
+            objSend.execute("");
         } else {
             if (mService.isBTopen())
                 startActivityForResult(new Intent(this, DeviceActivity.class), RC_CONNECT_DEVICE);
@@ -179,6 +185,37 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
             Toast.makeText(this, "Update successful",Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
             Toast.makeText(this, "Update failed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class Send extends AsyncTask<String, String, String> {
+        String msg = "";
+        String created_at = getDateTime();
+
+        @Override
+        protected void onPreExecute() {
+            textview.setText("Please wait inserting data");
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                if (conn == null) {
+                    msg = "Connection goes wrong";
+                } else {
+                    String query = "update data set status = '1', created_at = '"+created_at+"' where status = '0'";
+                    Statement stmt = conn.createStatement();
+                    stmt.execute(query);
+                    msg = "Update Successfull!";
+                }
+                conn.close();
+            } catch (Exception e) {
+                msg = "Connection goes wrong";
+                e.printStackTrace();
+            }
+            return msg;
         }
     }
 

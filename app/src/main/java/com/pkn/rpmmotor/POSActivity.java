@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +28,9 @@ import android.widget.Toast;
 
 import com.zj.btsdk.BluetoothService;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,12 +46,17 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class POSActivity extends AppCompatActivity {
 
     EditText edt_productid, edt_product, edt_qty, edt_price, edt_total, edt_list;
+    TextView textview;
     Button btn_search, btn_add, btn_print, btn_cancel;
     Switch sw_tax;
     ImageView img_refresh;
 
     ArrayList<String> titles = new ArrayList<String>();
     ArrayAdapter arrayAdapter;
+
+    private static final String DB_URL = "jdbc:mysql://192.168.0.110/db_rpmmotor";
+    private static final String USER = "zzz";
+    private static final String PASS = "zzz";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +97,9 @@ public class POSActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 add();
+
+                Send objSend = new Send();
+                objSend.execute("");
             }
         });
 
@@ -111,6 +123,7 @@ public class POSActivity extends AppCompatActivity {
         btn_print = findViewById(R.id.btn_print);
         btn_cancel = findViewById(R.id.btn_cancel);
         img_refresh = findViewById(R.id.img_refresh);
+        textview = findViewById(R.id.textview1);
     }
 
     public void search(){
@@ -204,6 +217,47 @@ public class POSActivity extends AppCompatActivity {
             edt_product.requestFocus();
         } catch (Exception ex) {
             Toast.makeText(this, "Category add failed",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class Send extends AsyncTask<String, String, String> {
+        String msg = "";
+        String product = edt_product.getText().toString();
+        String qty = edt_qty.getText().toString();
+        String price = edt_price.getText().toString();
+        String total = edt_total.getText().toString();
+        String created_at = getDateTime();
+        String status = "0";
+
+        @Override
+        protected void onPreExecute() {
+            textview.setText("Please wait inserting data");
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                if (conn == null) {
+                    msg = "Connection goes wrong";
+                } else {
+                    String query = "insert into data (product, qty, price, total, created_at, status)values('"+product+"','"+qty+"','"+price+"','"+total+"','"+created_at+"','"+status+"')";
+                    Statement stmt = conn.createStatement();
+                    stmt.execute(query);
+                    msg = "Inserting Successfull!";
+                }
+                conn.close();
+            } catch (Exception e){
+                msg = "Connection goes wrong";
+                e.printStackTrace();
+            }
+            return msg;
+        }
+
+        @Override
+        protected void onPostExecute(String msg) {
+            textview.setText(msg);
         }
     }
 }
