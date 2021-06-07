@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -26,6 +27,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pkn.rpmmotor.Model.Data;
+import com.pkn.rpmmotor.Remote.APIUtils;
+import com.pkn.rpmmotor.Remote.DataService;
 import com.zj.btsdk.BluetoothService;
 
 import java.sql.Connection;
@@ -42,6 +46,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class POSActivity extends AppCompatActivity {
 
@@ -54,9 +61,11 @@ public class POSActivity extends AppCompatActivity {
     ArrayList<String> titles = new ArrayList<String>();
     ArrayAdapter arrayAdapter;
 
-    private static final String DB_URL = "jdbc:mysql://192.168.0.110/db_rpmmotor";
-    private static final String USER = "zzz";
-    private static final String PASS = "zzz";
+    private static final String DB_URL = "jdbc:mysql://103.146.63.70:2083/rpmmotor_rpm-motor";
+    private static final String USER = "rpmmotor";
+    private static final String PASS = "@Rofiq312";
+
+    DataService dataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,7 @@ public class POSActivity extends AppCompatActivity {
         setContentView(R.layout.activity_p_o_s);
 
         this.initComponents();
+        dataService = APIUtils.getDataService();
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +107,8 @@ public class POSActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 add();
-
-                Send objSend = new Send();
-                objSend.execute("");
+//                Send objSend = new Send();
+//                objSend.execute("");
             }
         });
 
@@ -193,6 +202,7 @@ public class POSActivity extends AppCompatActivity {
     }
 
     public void insert(){
+        //Disabled
         try {
             String product = edt_product.getText().toString();
             String qty = edt_qty.getText().toString();
@@ -218,8 +228,34 @@ public class POSActivity extends AppCompatActivity {
         } catch (Exception ex) {
             Toast.makeText(this, "Category add failed",Toast.LENGTH_LONG).show();
         }
+        Data d = new Data();
+        d.setProduct(edt_product.getText().toString());
+        d.setQty(edt_qty.getText().toString());
+        d.setPrice(edt_price.getText().toString());
+        d.setTotal(edt_total.getText().toString());
+        d.setCreated_at(getDateTime());
+        d.setStatus("0");
+        addData(d);
     }
 
+    public void addData(Data d){
+        Call<Data> call = dataService.addData(d);
+        call.enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(Call<Data> call, Response<Data> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(POSActivity.this, "Data created successfull", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Data> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
+
+    //Disabled
     private class Send extends AsyncTask<String, String, String> {
         String msg = "";
         String product = edt_product.getText().toString();

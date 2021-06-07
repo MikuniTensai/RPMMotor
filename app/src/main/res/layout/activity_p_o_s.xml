@@ -138,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textColor="#313131"
+                android:inputType="number"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category" />
@@ -161,6 +162,7 @@
                 android:textColor="#313131"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:inputType="number"
                 app:layout_constraintTop_toBottomOf="@+id/brand" />
 
             <TextView
@@ -182,6 +184,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                android:inputType="number"
                 app:layout_constraintTop_toBottomOf="@id/qty" />
 
             <LinearLayout

@@ -1,14 +1,33 @@
 package com.pkn.rpmmotor;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.pkn.rpmmotor.Model.Data;
+import com.pkn.rpmmotor.Remote.APIUtils;
+import com.pkn.rpmmotor.Remote.DataService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     Button category, brand, product, category_view, brand_view, product_view, pos, pos_view, pos_print;
+    ImageView refresh;
+
+    DataService dataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.initComponents();
+        dataService = APIUtils.getDataService();
 
         category.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +108,38 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(pos_print);
             }
         });
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Data u = new Data();
+                deleteData(u);
+
+                SQLiteDatabase db = openOrCreateDatabase("pos", Context.MODE_PRIVATE, null);
+                String sql = "delete from pos where status = 0";
+                SQLiteStatement statement = db.compileStatement(sql);
+                statement.execute();
+                finish();
+                startActivity(getIntent());
+            }
+        });
+    }
+
+    public void deleteData(Data u){
+        Call<Data> call = dataService.deleteData(u);
+        call.enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(Call<Data> call, Response<Data> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(MainActivity.this, "Update data successfull", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Data> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
 
     private void initComponents(){
@@ -100,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         pos = findViewById(R.id.pos);
         pos_view = findViewById(R.id.post_view);
         pos_print = findViewById(R.id.post_print);
+        refresh = findViewById(R.id.refresh);
     }
 
 }

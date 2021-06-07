@@ -15,12 +15,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pkn.rpmmotor.Model.Data;
+import com.pkn.rpmmotor.Remote.APIUtils;
+import com.pkn.rpmmotor.Remote.DataService;
 import com.zj.btsdk.BluetoothService;
 
 import java.sql.Connection;
@@ -38,6 +42,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class POSViewActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, BluetoothHandler.HandlerInterface{
     ListView list_item;
@@ -54,12 +61,14 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
     public static final int RC_CONNECT_DEVICE = 1;
     public static final int RC_ENABLE_BLUETOOTH = 2;
 
-    private static final String DB_URL = "jdbc:mysql://192.168.0.110/db_rpmmotor";
-    private static final String USER = "zzz";
-    private static final String PASS = "zzz";
+    private static final String DB_URL = "jdbc:mysql://103.146.63.70:2083/rpmmotor_rpm-motor";
+    private static final String USER = "rpmmotor";
+    private static final String PASS = "@Rofiq312";
 
     private BluetoothService mService = null;
     private boolean isPrinterReady = false;
+
+    DataService dataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,8 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
 
         ButterKnife.bind(this);
         setupBluetooth();
+
+        dataService = APIUtils.getDataService();
 
         try {
             btn_print.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +135,7 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
 
             this.addAllValues();
             textview.setText("Total : Rp. "+Integer.toString(addAllValues())+"\n\n");
+
         } catch (Exception e){
             Intent pos = new Intent(POSViewActivity.this, POSActivity.class);
             pos.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -152,6 +164,11 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
             mService.write(PrinterCommands.ESC_ENTER);
 
             update();
+
+            Data u = new Data();
+            u.setStatus("1");
+            u.setCreated_at(getDateTime());
+            updateData(u);
 
             POSViewActivity.Send objSend = new POSViewActivity.Send();
             objSend.execute("");
@@ -217,6 +234,23 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
             }
             return msg;
         }
+    }
+
+    public void updateData(Data u){
+        Call<Data> call = dataService.updateData(u);
+        call.enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(Call<Data> call, Response<Data> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(POSViewActivity.this, "Update data successfull", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Data> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
 
     private void requestBluetooth() {
