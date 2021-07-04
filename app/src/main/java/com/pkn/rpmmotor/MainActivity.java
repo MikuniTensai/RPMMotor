@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.pkn.rpmmotor.Manual.ServiceActivity;
 import com.pkn.rpmmotor.Model.Data;
 import com.pkn.rpmmotor.Remote.APIUtils;
 import com.pkn.rpmmotor.Remote.DataService;
@@ -24,7 +25,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button category, brand, product, category_view, brand_view, product_view, pos, pos_view, pos_print;
+    Button category, brand, product, category_view, brand_view, product_view, pos, pos_view, pos_print, manual;
     ImageView refresh;
 
     DataService dataService;
@@ -123,6 +124,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(getIntent());
             }
         });
+
+        manual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent manual = new Intent(MainActivity.this, ServiceActivity.class);
+                startActivity(manual);
+            }
+        });
     }
 
     public void deleteData(Data u){
@@ -153,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         pos_view = findViewById(R.id.post_view);
         pos_print = findViewById(R.id.post_print);
         refresh = findViewById(R.id.refresh);
+        manual = (Button) findViewById(R.id.manual);
     }
 
 }

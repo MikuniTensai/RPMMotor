@@ -8,7 +8,7 @@
     android:paddingEnd="24dp"
     android:paddingTop="180dp"
     android:background="#FFFFFF"
-    tools:context=".BrandUpdateActivity">
+    tools:context=".Manual.PlateActivity">
 
     <LinearLayout
         android:id="@+id/linear_logo"
@@ -17,116 +17,105 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.016"
-        android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/text_username">
 
         <TextView
-            android:layout_width="285dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:text="Update Brand"
+            android:text="Add Plat Cars"
+            android:paddingRight="200dp"
             android:textColor="#313131"
             android:textSize="14sp" />
-
-        <ImageView
-            android:id="@+id/img_delete"
-            android:layout_width="42dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:paddingRight="8dp"
-            android:src="@drawable/ic_baseline_delete_24"
-            android:textSize="24sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_categoryid"
+        android:id="@+id/text_sparepart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="ID"
+        android:text="No Plat"
         android:textColor="#313131"
         android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_logo" />
 
     <EditText
-        android:id="@+id/edt_brandid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:editable="false"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_categoryid" />
-
-    <TextView
-        android:id="@+id/text_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Brand"
-        android:textColor="#313131"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_brandid" />
-
-    <EditText
-        android:id="@+id/edt_brand"
+        android:id="@+id/edt_noplat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_category" />
+        app:layout_constraintTop_toBottomOf="@id/text_sparepart" />
 
     <TextView
-        android:id="@+id/text_desc"
+        android:id="@+id/text_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Brand Description"
+        android:text="Brand Mobil"
         android:textColor="#313131"
         android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_brand" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_noplat" />
 
     <EditText
-        android:id="@+id/edt_desc"
+        android:id="@+id/edt_brandcar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_desc" />
+        app:layout_constraintTop_toBottomOf="@id/text_count" />
+
+    <TextView
+        android:id="@+id/text_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Jenis Mobil"
+        android:textColor="#313131"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_brandcar" />
+
+    <EditText
+        android:id="@+id/edt_typecar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_price" />
 
     <LinearLayout
         android:id="@+id/linear_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:gravity="right"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_desc">
+        app:layout_constraintTop_toBottomOf="@+id/edt_typecar">
 
         <Button
-            android:id="@+id/btn_update"
-            android:layout_width="160dp"
+            android:id="@+id/btn_finish"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:background="@drawable/button_red"
-            android:text="Update"
-            android:layout_marginRight="4dp"
+            android:text="Finish"
             android:textSize="14sp"
-            app:backgroundTint="@color/btn_color1" />
+            app:backgroundTint="@color/color3" />
 
         <Button
             android:id="@+id/btn_cancel"
-            android:layout_width="160dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:background="@drawable/button_red"

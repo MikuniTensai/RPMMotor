@@ -159,6 +159,33 @@ public class POSActivity extends AppCompatActivity {
                     edt_price.setText(c.getString(price));
                 } while (c.moveToNext());
             }
+
+            try {
+                SQLiteDatabase dbc = openOrCreateDatabase("rpmmotor", Context.MODE_PRIVATE, null);
+                String idd = edt_productid.getText().toString();
+                final Cursor d = dbc.rawQuery("select * from product where product like '"+idd+"'", null);
+                int productd = d.getColumnIndex("product");
+                int qtyd = d.getColumnIndex("qty");
+                int priced = d.getColumnIndex("price");
+
+                titles.clear();
+
+                final ArrayList<ProductView> productsd = new ArrayList<ProductView>();
+                if (d.moveToFirst()){
+                    do {
+                        ProductView stu = new ProductView();
+                        stu.product = d.getString(productd);
+                        stu.qty = d.getString(qtyd);
+                        stu.price = d.getString(priced);
+                        products.add(stu);
+
+                        edt_product.setText(d.getString(product));
+                        edt_price.setText(d.getString(price));
+                    } while (d.moveToNext());
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, "Data Empty, add Product First",Toast.LENGTH_LONG).show();
+            }
         } catch (Exception e){
             Intent product = new Intent(POSActivity.this, ProductActivity.class);
             product.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

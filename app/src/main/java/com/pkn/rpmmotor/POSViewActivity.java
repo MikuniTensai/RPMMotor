@@ -18,7 +18,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,7 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.tv_status)
     TextView tvStatus;
+    Switch sw_tax;
 
     private final String TAG = MainActivity.class.getSimpleName();
     public static final int RC_BLUETOOTH = 0;
@@ -80,6 +83,7 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
         textview1 = findViewById(R.id.textview1);
         btn_print = findViewById(R.id.btn_print);
         tvStatus = findViewById(R.id.tv_status);
+        sw_tax = findViewById(R.id.sw_tax);
 
         ButterKnife.bind(this);
         setupBluetooth();
@@ -111,7 +115,7 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
 
             String msg = "================================";
 
-            textview1.setText("RPM Motor \n Jln Sudirman \n Telp. 0821");
+            textview1.setText("RPM Motor \n Perum Bumi Perkasa Regency \n Karangploso Malang \n Telp. 082139119990");
             titles.add(msg);
             final ArrayList<Product> Products = new ArrayList<Product>();
             if (c.moveToFirst()){
@@ -125,16 +129,30 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
                     prd.status = c.getString(status);
                     Products.add(prd);
 
-                    titles.add(c.getString(product) + "\n" + c.getString(qty) + " QTY\tX\t" + "Rp." + c.getString(price) + "\t\t\t=\t" + " Rp." + c.getString(total));
+                    titles.add(c.getString(product) + "\t" + c.getString(qty) + " QTY X " + "Rp." + c.getString(price) + " \t \t = " + "   Rp. " + c.getString(total));
 
                 } while (c.moveToNext());
                 titles.add(msg);
+                textview.setText("Total : Rp. "+Integer.toString(addAllValues())+"\n\n");
                 arrayAdapter.notifyDataSetChanged();
                 list_item.invalidateViews();
             }
 
             this.addAllValues();
-            textview.setText("Total : Rp. "+Integer.toString(addAllValues())+"\n\n");
+            sw_tax.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    textview.setText("Total : Rp. "+Integer.toString(addAllValues())+"\n\n");
+                    if(checked){
+                        Integer total = addAllValues() + (10 * addAllValues()  / 100);;
+                        textview.setText("Total : Rp. "+Integer.toString(total)+"\n Sudah termasuk ppn 10% \n");
+                        Toast.makeText(getApplicationContext(),"True", Toast.LENGTH_SHORT).show();
+                    }else {
+                        textview.setText("Total : Rp. "+Integer.toString(addAllValues())+"\n\n");
+                        Toast.makeText(getApplicationContext(),"False", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
         } catch (Exception e){
             Intent pos = new Intent(POSViewActivity.this, POSActivity.class);
@@ -154,13 +172,21 @@ public class POSViewActivity extends AppCompatActivity implements EasyPermission
                 Toast.makeText(this, "Cant print null text", Toast.LENGTH_SHORT).show();
                 return;
             }
+            mService.write(PrinterCommands.ESC_ENTER);
             mService.write(PrinterCommands.ESC_ALIGN_CENTER);
             mService.sendMessage(textview1.getText().toString(), "");
             for (int position = 0;position<list_item.getCount();position++){
                 mService.sendMessage(list_item.getItemAtPosition(position).toString(),"");
             }
-            mService.write(PrinterCommands.ESC_ALIGN_CENTER);
+            mService.write(PrinterCommands.ESC_ALIGN_RIGHT);
             mService.sendMessage(textview.getText().toString(), "");
+            mService.write(PrinterCommands.ESC_ALIGN_LEFT);
+            mService.sendMessage("Tanggal : " + getDateTime(),"");
+            mService.write(PrinterCommands.ESC_ENTER);
+            mService.write(PrinterCommands.ESC_ALIGN_CENTER);
+            mService.sendMessage("Terima Kasih Sudah Berkunjung \n RPM Motor Spesialis Chevrolet \n Akses rpmmotor.web.id","");
+            mService.write(PrinterCommands.ESC_ENTER);
+            mService.write(PrinterCommands.ESC_ENTER);
             mService.write(PrinterCommands.ESC_ENTER);
 
             update();

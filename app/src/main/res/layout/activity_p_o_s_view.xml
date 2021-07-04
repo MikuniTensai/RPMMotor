@@ -1,55 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".POSViewActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tv_status"
-        android:layout_gravity="right"
-        android:gravity="center"
-        android:layout_margin="16dp"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        tools:context=".POSViewActivity">
 
-    <TextView
-        android:id="@+id/textview1"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/list_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        tools:layout_editor_absoluteX="94dp"
-        tools:layout_editor_absoluteY="175dp" />
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/textview"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textview1"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_print"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_red"
-        android:text="Print"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_marginRight="4dp"
-        android:layout_marginLeft="4dp"
-        android:textSize="18sp"
-        app:backgroundTint="@color/purple_700" />
+            <ListView
+                android:id="@+id/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="384dp"
+                android:layout_margin="16dp"
+                tools:layout_editor_absoluteX="94dp"
+                tools:layout_editor_absoluteY="175dp" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tax"
+                android:textAllCaps="false"
+                android:textColor="#313131"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_gravity="left"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_total"
+                tools:ignore="RtlHardcoded" />
+
+            <Switch
+                android:id="@+id/sw_tax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                app:layout_constraintHorizontal_bias="1.0"
+                android:layout_margin="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tax"
+                android:layout_gravity="right"
+                tools:ignore="RtlHardcoded,UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/textview"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_print"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_red"
+                android:text="Print"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:textSize="18sp"
+                android:layout_marginBottom="120dp"
+                app:backgroundTint="@color/purple_700" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,10 +32,14 @@ public class Data {
     @Expose
     private String created_at;
 
+    @SerializedName("tax")
+    @Expose
+    private String tax;
+
     public Data() {
     }
 
-    public Data(int id, String product, String qty, String price, String total, String status, String created_at) {
+    public Data(int id, String product, String qty, String price, String total, String status, String created_at, String tax) {
         this.id = id;
         this.product = product;
         this.qty = qty;
@@ -43,6 +47,7 @@ public class Data {
         this.total = total;
         this.status = status;
         this.created_at = created_at;
+        this.tax = tax;
     }
 
     public int getId() {
@@ -99,5 +104,13 @@ public class Data {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public void setTax(String tax) {
+        this.tax = tax;
     }
 }
