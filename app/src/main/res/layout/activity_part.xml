@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:paddingTop="190dp"
+    android:padding="24dp"
     android:layout_gravity="center"
     app:layout_gravity="center"
     android:background="#FFFFFF"
@@ -22,7 +20,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/text_username">
+        app:layout_constraintBottom_toBottomOf="@+id/text_username"
+        tools:ignore="UnknownIdInLayout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,17 +41,37 @@
             tools:ignore="OnClick" />
 
     </LinearLayout>
-
     <TextView
-        android:id="@+id/text_sparepart"
+        android:id="@+id/text_idsparepart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="Spare Part"
+        android:text="ID Spare Part"
+        android:inputType="number"
         android:textColor="#313131"
         android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_logo" />
+
+    <EditText
+        android:id="@+id/edt_idsparepart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="number"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_idsparepart" />
+    <TextView
+        android:id="@+id/text_sparepart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Spare Part"
+        android:textColor="#313131"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_idsparepart" />
 
     <EditText
         android:id="@+id/edt_sparepart"
@@ -79,6 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:inputType="number"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_count" />
@@ -99,6 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:inputType="number"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_price" />

@@ -13,36 +13,39 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.54"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="6dp">
         <Button
             android:id="@+id/category"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="Category"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color1"/>
         <Button
             android:id="@+id/brand"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginTop="0.5dp"
             android:text="Brand"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color2"/>
         <Button
             android:id="@+id/product"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="Product"
-            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color3"/>
     </LinearLayout>
@@ -52,35 +55,37 @@
         android:layout_height="0dp"
         android:layout_weight="0.54"
         android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
         <Button
             android:id="@+id/category_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="Category View"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color1"/>
         <Button
             android:id="@+id/brand_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="Brand View"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color2"/>
         <Button
             android:id="@+id/product_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="Product View"
-            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color3"/>
     </LinearLayout>
@@ -89,36 +94,39 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.54"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="6dp">
+        android:layout_marginEnd="32dp">
         <Button
             android:id="@+id/pos"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
-            android:text="Pos"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:text="POS"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color1"/>
+
         <Button
             android:id="@+id/post_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="POS View"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color2"/>
         <Button
             android:id="@+id/post_print"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="POS Print"
-            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color3"/>
     </LinearLayout>
@@ -127,30 +135,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.54"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="6dp">
+        android:layout_marginEnd="32dp">
         <Button
             android:id="@+id/manual"
-            android:layout_width="324dp"
-            android:layout_height="62dp"
-            android:layout_weight="1.00"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:text="Manual"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/black"
             app:backgroundTint="@color/color1"/>
+
         <ImageView
             android:id="@+id/refresh"
-            android:layout_width="124dp"
-            android:layout_height="42dp"
-            android:layout_weight="1.00"
-            android:layout_marginTop="12dp"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:background="@drawable/ic_baseline_refresh_24"
-            android:textSize="11sp"
-            android:layout_marginRight="12dp"
-            android:textColor="@color/black"
-            app:backgroundTint="@color/color2"/>
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/btn_color1"
+            app:backgroundTint="@color/btn_color1"/>
     </LinearLayout>
+
 
 </LinearLayout>
